@@ -1,0 +1,26 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Dec  3 11:49:04 2021
+
+@author: mkair
+"""
+
+import requests
+import time
+from bs4 import BeautifulSoup
+
+url = "https://www.krihs.re.kr/issue/cbriefList.do"
+res = requests.get(url)
+res.raise_for_status
+
+soup = BeautifulSoup(res.text, "lxml")
+
+lists = soup.find_all("td", attrs={"class":"text_l pl_10"})
+for list in lists:
+    title = list.a.get_text()
+    title = title.strip() # 문자열의 시작과 끝의 공백만 제거
+    link = "https://www.krihs.re.kr" + list.a["href"]
+    print(title)
+    print(link)
+    
+print(list)
